@@ -47,12 +47,16 @@ async function GetPost(req, resp) {
         for (let i of res.msg) {
             let path = __dirname + "/../" + i.post_thum;
             console.log(path);
-            let base64Thum = "data:image/jpeg;base64," + fs.readFileSync(path, {encoding: 'base64'});
+            let base64Thum;
+            try {
+                base64Thum = "data:image/jpeg;base64," + fs.readFileSync(path, {encoding: 'base64'});
+            } catch(e) {
+                base64Thum = "";
+            }
             i.post_title = Utils.Convert2String4Java(i.post_title);
             i.post_content = Utils.Convert2String4Java(i.post_content);
-            i.thum = Utils.Convert2String4Java(base64Thum);
+            i.post_thum = Utils.Convert2String4Java(base64Thum);
             i.create_time = Utils.Convert2String4Java(i.create_time);
-            delete i.post_thum;
         }
         Utils.SuccessResp(resp, res.msg);
     } catch(e) {
