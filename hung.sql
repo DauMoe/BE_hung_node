@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 19, 2021 at 03:40 AM
+-- Generation Time: Oct 19, 2021 at 05:38 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.2.32
 
@@ -39,9 +39,8 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`eventID`, `comment`, `managerID`, `timestamp`) VALUES
-(1, 'CHo phép làm đề tài', 2, '2021-10-06 11:40:41'),
-(2, 'Kiểm tra tiến độ đợt 1 OK', 2, '2021-10-07 11:40:41'),
-(21, 'Register topic success', 45, '2021-10-17 19:57:28');
+(22, 'Lafm bafi oke la', 65, '2021-10-19 10:11:51'),
+(23, 'Ok ddaay', 65, '2021-10-19 10:21:15');
 
 -- --------------------------------------------------------
 
@@ -56,15 +55,16 @@ CREATE TABLE `manager_topic` (
   `topicID` int(4) NOT NULL,
   `timestamp` datetime NOT NULL DEFAULT current_timestamp(),
   `status` varchar(10) NOT NULL,
-  `doc_link` text NOT NULL
+  `doc_link` text NOT NULL,
+  `deadline` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `manager_topic`
 --
 
-INSERT INTO `manager_topic` (`managerID`, `teacherID`, `studentID`, `topicID`, `timestamp`, `status`, `doc_link`) VALUES
-(49, 10, 10, 13, '2021-10-19 08:37:43', '', 'http://doc.google.com/abAWF44CB');
+INSERT INTO `manager_topic` (`managerID`, `teacherID`, `studentID`, `topicID`, `timestamp`, `status`, `doc_link`, `deadline`) VALUES
+(65, 10, 10, 15, '2021-10-19 09:58:09', 'ON', 'http://doc.google.com/abAWF44CB', '2021-11-20');
 
 -- --------------------------------------------------------
 
@@ -122,7 +122,8 @@ CREATE TABLE `topics` (
 --
 
 INSERT INTO `topics` (`topicID`, `authorID`, `topic_name`, `topic_desc`, `topic_images`, `status`, `create_time`) VALUES
-(13, 10, 'moe', 'nothing', 'picture/1634573847197', 'ON', '2021-10-18 23:17:27');
+(13, 10, 'moe', 'nothing', 'picture/1634573847197', 'ON', '2021-10-18 23:17:27'),
+(15, 10, 'topic1', 'test topic', 'picture/1634612036845', 'ON', '2021-10-19 09:53:56');
 
 -- --------------------------------------------------------
 
@@ -164,7 +165,7 @@ INSERT INTO `users` (`userID`, `email`, `code`, `password`, `ava_url`, `dob`, `a
 --
 ALTER TABLE `events`
   ADD PRIMARY KEY (`eventID`),
-  ADD KEY `fo_managerID` (`managerID`);
+  ADD KEY `fo_managerID_events` (`managerID`);
 
 --
 -- Indexes for table `manager_topic`
@@ -210,13 +211,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `eventID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `eventID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `manager_topic`
 --
 ALTER TABLE `manager_topic`
-  MODIFY `managerID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `managerID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -234,7 +235,7 @@ ALTER TABLE `rating`
 -- AUTO_INCREMENT for table `topics`
 --
 ALTER TABLE `topics`
-  MODIFY `topicID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `topicID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -251,21 +252,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `events`
   ADD CONSTRAINT `fo_managerID` FOREIGN KEY (`managerID`) REFERENCES `manager_topic` (`managerID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `managerID_fo` FOREIGN KEY (`managerID`) REFERENCES `manager_topic` (`managerID`);
-
---
--- Constraints for table `manager_topic`
---
-ALTER TABLE `manager_topic`
-  ADD CONSTRAINT `mana_topicid` FOREIGN KEY (`topicID`) REFERENCES `topics` (`topicID`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `student_mana_topic` FOREIGN KEY (`studentID`) REFERENCES `users` (`userID`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `teaccher_mana_topic` FOREIGN KEY (`teacherID`) REFERENCES `users` (`userID`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Constraints for table `topics`
---
-ALTER TABLE `topics`
-  ADD CONSTRAINT `author_topic` FOREIGN KEY (`authorID`) REFERENCES `users` (`userID`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fo_managerID_events` FOREIGN KEY (`managerID`) REFERENCES `manager_topic` (`managerID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
