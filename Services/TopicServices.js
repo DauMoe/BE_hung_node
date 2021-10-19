@@ -11,7 +11,25 @@ const SALT_ROUNDS = 10;
 
 module.exports = {
     NewTopic: NewTopic,
-    ApproveTopic: ApproveTopic
+    ApproveTopic: ApproveTopic,
+    GetListTopic: GetListTopic
+}
+
+async function GetListTopic(req, resp) {
+    try {
+        let res = await TopicDAO.GetAllTopic();
+        for (let i of res.msg) {
+            i.topic_name = Utils.Convert2String4Java(i.topic_name);
+            i.topic_desc = Utils.Convert2String4Java(i.topic_desc);
+            i.teacher_email = Utils.Convert2String4Java(i.teacher_email);
+            i.teacher_code = Utils.Convert2String4Java(i.teacher_code);
+            i.status = Utils.Convert2String4Java(i.status);
+            i.create_time = Utils.Convert2String4Java(i.create_time);
+        }
+        Utils.SuccessResp(resp, res.msg);
+    } catch (e) {
+        Utils.ResponseDAOFail(resp, e.message);
+    }
 }
 
 async function NewTopic(req, resp) {
@@ -29,7 +47,7 @@ async function NewTopic(req, resp) {
         Utils.SuccessResp(resp, [Utils.Convert2String4Java("Create topic ok")]);
     } catch(e) {
         console.log(e);
-        Utils.ResponseDAOFail(resp, e.message);
+        Utils.ResponseDAOFail(resp, e);
     }
 }
 

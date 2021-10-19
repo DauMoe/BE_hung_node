@@ -7,7 +7,16 @@ const connection    = mysql.createConnection(db_info.db_config);
 module.exports = {
     NewTopic: NewTopic,
     GetPendingTopic: GetPendingTopic,
-    ApproveTopic: ApproveTopic
+    ApproveTopic: ApproveTopic,
+    GetAllTopic: GetAllTopic
+}
+
+function GetAllTopic() {
+    let sql = "Select h1.*, h2.email as 'teacher_email', h2.code as 'teacher_code' from topics h1 left join users h2 on h1.authorID = h2.userID";
+    console.log("???")
+    return new Promise((resolve, reject) => {
+        connection.query(sql,  (err, res) => Utils.HandQuery(err, res, resolve, reject));
+    });
 }
 
 function NewTopic(authorID, topic_name, topic_desc, topic_images) {
