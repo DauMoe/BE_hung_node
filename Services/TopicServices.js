@@ -14,8 +14,6 @@ module.exports = {
     ApproveTopic: ApproveTopic
 }
 
-// "data:image/jpeg;base64," + fs.readFileSync(path, {encoding: 'base64'})
-
 async function NewTopic(req, resp) {
     req = req.body;
 
@@ -28,9 +26,10 @@ async function NewTopic(req, resp) {
         let FilePath = "picture/" + Date.now();
         fs.writeFileSync(FilePath, req.topic_images, 'base64');
         await TopicDAO.NewTopic(req.authorID, req.topic_name, req.topic_desc, FilePath);
-        Utils.SuccessResp(resp, Utils.Convert2String4Java("Create topic ok"));
+        Utils.SuccessResp(resp, [Utils.Convert2String4Java("Create topic ok")]);
     } catch(e) {
-        Utils.ResponseDAOFail(resp, e);
+        console.log(e);
+        Utils.ResponseDAOFail(resp, e.message);
     }
 }
 
@@ -41,7 +40,7 @@ async function ApproveTopic(req, resp) {
 
     try {
         await TopicDAO.ApproveTopic(req.topicID);
-        Utils.SuccessResp(resp, Utils.Convert2String4Java("Approve topic ok"));
+        Utils.SuccessResp(resp, [Utils.Convert2String4Java("Approve topic ok")]);
     } catch (e) {
         Utils.ResponseDAOFail(resp, e);
     }

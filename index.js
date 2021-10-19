@@ -3,7 +3,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const API_URL = require('./URL_DEFINE');
-const AuthMiddle = require('./Utils/Autho');
 const USER_SV = require('./Services/UserServices');
 const TOPIC_SV = require('./Services/TopicServices');
 const POST_SV = require('./Services/PostServices');
@@ -39,6 +38,11 @@ app.post(API_URL.ALL_POST, POST_SV.GetPost);
 app.post(API_URL.REGIS_TOPIC, MANA_SV.RegisterTopic);
 app.post(API_URL.DEL_TOPIC, MANA_SV.DeleteTopic);
 app.post(API_URL.EDIT_LINK, MANA_SV.EditDocLink);
+app.post(API_URL.PENDING_MANA_TOPIC, MANA_SV.PendingManaTopic);
+app.post(API_URL.APPROVE_MANA_TOPIC, MANA_SV.ApproveManaTopic);
+app.post(API_URL.COMMENT_MANA_TOPIC, MANA_SV.CommentManaTopic);
+app.post(API_URL.GET_ALL_COMMENT, MANA_SV.GetAllCommentofTopic);
+app.post(API_URL.SET_DEADLINE, MANA_SV.SetDeadline);
 
 app.listen(8080, function() {
     console.log("Listen at http://<your device's IP>:8080");

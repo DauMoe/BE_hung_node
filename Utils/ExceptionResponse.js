@@ -32,7 +32,7 @@ function CustomMsg(resp, code, msg) {
 }
 
 function SuccessResp(resp, msg) {
-    CustomMsg(resp, 200, [msg]);
+    CustomMsg(resp, 200, msg);
 }
 
 function HandQuery(err, res, resolve, reject) {
