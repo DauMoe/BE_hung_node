@@ -6,15 +6,16 @@ const connection    = mysql.createConnection(db_info.db_config);
 
 module.exports = {
     NewPost: NewPost,
-    GetPost: GetPost
+    GetPost: GetPost,
+
 }
 
 function NewPost(post_title, post_content, post_thum) {
     let sql = "INSERT INTO posts (post_title, post_content, post_thum) VALUES (?, ?, ?)";
 
-    return new Promise(((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         connection.query(sql, [post_title, post_content, post_thum], (err, res) => Utils.HandQuery(err, res, resolve, reject));
-    }));
+    });
 }
 
 function GetPost() {

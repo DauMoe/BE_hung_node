@@ -1,4 +1,5 @@
 const TopicDAO = require('./../DAO/TopicDAO');
+const MangerTopicDAO = require('./../DAO/MangerTopicDAO');
 const Utils = require('./../Utils/ExceptionResponse');
 const fs = require('fs');
 const JWT_Utils = require('./../Utils/Autho');
@@ -12,7 +13,38 @@ const SALT_ROUNDS = 10;
 module.exports = {
     NewTopic: NewTopic,
     ApproveTopic: ApproveTopic,
-    GetListTopic: GetListTopic
+    GetListTopic: GetListTopic,
+    DetailTopic: DetailTopic
+}
+
+async function DetailTopic(req, resp) {
+    req = req.body;
+
+    if (!req.hasOwnProperty("topicID")) Utils.ThrowMissingFields(resp, "topicID");
+
+    try {
+        let res = await TopicDAO.GetDetailTopicByID(req.topicID);
+        let comments = await MangerTopicDAO.GetAllCommentofTopic(res.msg[0].managerID);
+        for (let j of comments.msg) {
+            j.comment = Utils.Convert2String4Java(j.comment);
+            j.timestamp = Utils.Convert2String4Java(j.timestamp);
+        }
+        res.msg[0].comments = comments.msg;
+        res.msg[0].registed = Utils.Convert2String4Java(res.msg[0].registed);
+        res.msg[0].topic_name = Utils.Convert2String4Java(res.msg[0].topic_name);
+        res.msg[0].topic_desc = Utils.Convert2String4Java(res.msg[0].topic_desc);
+        res.msg[0].create_time = Utils.Convert2String4Java(res.msg[0].create_time);
+
+        let path = __dirname + "/../" + res.msg[0].topic_images;
+        try {
+            res.msg[0].topic_images = Utils.Convert2String4Java(fs.readFileSync(path, {encoding: 'base64'}));
+        } catch(e) {
+            res.msg[0].topic_images = Utils.Convert2String4Java("");
+        }
+        Utils.SuccessResp(resp, res.msg[0]);
+    } catch (e) {
+        Utils.ResponseDAOFail(resp, e);
+    }
 }
 
 async function GetListTopic(req, resp) {
@@ -28,7 +60,7 @@ async function GetListTopic(req, resp) {
         }
         Utils.SuccessResp(resp, res.msg);
     } catch (e) {
-        Utils.ResponseDAOFail(resp, e.message);
+        Utils.ResponseDAOFail(resp, e);
     }
 }
 

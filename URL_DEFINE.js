@@ -6,6 +6,7 @@ module.exports = {
     NEW_TOPIC: '/new_topic',
     APPROVE_TOPIC: '/approve_topic',
     LIST_TOPIC: '/list_topic',
+    DETAIL_TOPIC: '/detail_topic',
 
     NEW_POST: '/new_post',
     ALL_POST: '/list_posts',

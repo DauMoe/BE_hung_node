@@ -8,7 +8,16 @@ module.exports = {
     NewTopic: NewTopic,
     GetPendingTopic: GetPendingTopic,
     ApproveTopic: ApproveTopic,
-    GetAllTopic: GetAllTopic
+    GetAllTopic: GetAllTopic,
+    GetDetailTopicByID: GetDetailTopicByID
+}
+
+function GetDetailTopicByID(topicID) {
+    let sql = "select case when (SELECT f1.managerID FROM manager_topic f1 WHERE f1.topicID = ?) IS NULL THEN 'false' ELSE 'true' END AS 'registed', h1.topicID, h2.managerID, h1.topic_name, h1.topic_desc, h1.topic_images, h1.create_time FROM topics h1 left join manager_topic h2 on h1.topicID = h2.topicID where h1.topicID = ?";
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, [topicID, topicID], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+    });
 }
 
 function GetAllTopic() {

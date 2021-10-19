@@ -49,7 +49,7 @@ async function GetPost(req, resp) {
             console.log(path);
             let base64Thum;
             try {
-                base64Thum = "data:image/jpeg;base64," + fs.readFileSync(path, {encoding: 'base64'});
+                base64Thum = fs.readFileSync(path, {encoding: 'base64'});
             } catch(e) {
                 base64Thum = "";
             }

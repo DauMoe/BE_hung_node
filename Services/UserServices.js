@@ -23,7 +23,7 @@ async function Rating(req, resp) {
 
     try {
         await UserDAO.Rating(req.userID, req.stars);
-        Utils.SuccessResp(resp, Utils.Convert2String4Java("Thanks for rating!"));
+        Utils.SuccessResp(resp, [Utils.Convert2String4Java("Thanks for rating!")]);
     } catch(e) {
         Utils.ResponseDAOFail(resp, e);
     }
@@ -39,13 +39,14 @@ async function NewUser(req, resp) {
 
     try {
         let result = await UserDAO.CreateNewUser(req.email, req.code, req.password, req.roles);
-        Utils.SuccessResp(resp, Utils.Convert2String4Java("Create user ok"));
+        Utils.SuccessResp(resp, [Utils.Convert2String4Java("Create user ok")]);
     } catch(e) {
         Utils.ResponseDAOFail(resp, e);
     }
 }
 
 async function Login(req, resp) {
+    console.log("Login");
     req = req.body;
     let finger = false;
 
@@ -68,7 +69,7 @@ async function Login(req, resp) {
                     result.msg[0][`${i}`] = Utils.Convert2String4Java("");
                 }
             }
-            Utils.SuccessResp(resp, result.msg[0]);
+            Utils.SuccessResp(resp, [result.msg[0]]);
         }
     } catch(e) {
         Utils.ResponseDAOFail(resp, e);

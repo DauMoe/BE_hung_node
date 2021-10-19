@@ -24,7 +24,7 @@ function SetDeadline(managerID, deadline) {
 }
 
 function GetAllCommentofTopic(managerID) {
-    let sql = "SELECT * FROM events WHERE managerID = ?";
+    let sql = "SELECT * FROM events WHERE managerID = ? ORDER BY timestamp DESC";
 
     return new Promise((resolve, reject) => {
         connection.query(sql, [managerID], (err, res) => Utils.HandQuery(err, res, resolve, reject));

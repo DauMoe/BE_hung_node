@@ -32,6 +32,7 @@ app.post(API_URL.RATING, USER_SV.Rating);
 app.post(API_URL.NEW_TOPIC, TOPIC_SV.NewTopic);
 app.post(API_URL.APPROVE_TOPIC, TOPIC_SV.ApproveTopic);
 app.post(API_URL.LIST_TOPIC, TOPIC_SV.GetListTopic);
+app.post(API_URL.DETAIL_TOPIC, TOPIC_SV.DetailTopic);
 
 app.post(API_URL.NEW_POST, POST_SV.NewPost);
 app.post(API_URL.ALL_POST, POST_SV.GetPost);
