@@ -51,6 +51,22 @@ function HandQuery(err, res, resolve, reject) {
     }
 }
 
+function HandQueryWithCode(err, res, resolve, reject) {
+    if (err) {
+        // console.log(err);
+        reject({
+            "code": db_info.query_code.QUERY_FAIL,
+            "msg": err
+        });
+        // throw Error(err);
+    } else {
+        resolve({
+            "code": db_info.query_code.OK,
+            "msg": res
+        })
+    }
+}
+
 function Convert2String4Java(msg) {
     return '\"' + msg + '\"';
 }
@@ -61,5 +77,6 @@ module.exports = {
     CustomMsg: CustomMsg,
     SuccessResp: SuccessResp,
     HandQuery: HandQuery,
-    Convert2String4Java: Convert2String4Java
+    Convert2String4Java: Convert2String4Java,
+    HandQueryWithCode: HandQueryWithCode
 }
