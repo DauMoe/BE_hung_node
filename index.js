@@ -44,7 +44,9 @@ app.post(API_URL.PENDING_MANA_TOPIC, MANA_SV.PendingManaTopic);
 app.post(API_URL.APPROVE_MANA_TOPIC, MANA_SV.ApproveManaTopic);
 app.post(API_URL.COMMENT_MANA_TOPIC, MANA_SV.CommentManaTopic);
 app.post(API_URL.GET_ALL_COMMENT, MANA_SV.GetAllCommentofTopic);
+app.post(API_URL.LIST_MANA_TOPIC, MANA_SV.GetTeacherManagerTopic);
 app.post(API_URL.SET_DEADLINE, MANA_SV.SetDeadline);
+app.post(API_URL.DETAIL_MANA_TOPIC, MANA_SV.DetailManaTopic);
 
 app.listen(8080, function() {
     console.log("Listen at http://<your device's IP>:8080");

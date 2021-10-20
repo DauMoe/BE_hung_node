@@ -1,5 +1,6 @@
 const MangerTopicDAO = require('./../DAO/MangerTopicDAO');
 const Utils = require('./../Utils/ExceptionResponse');
+const fs = require('fs');
 const JWT_Utils = require('./../Utils/Autho');
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
@@ -16,7 +17,61 @@ module.exports = {
     ApproveManaTopic: ApproveManaTopic,
     CommentManaTopic: CommentManaTopic,
     GetAllCommentofTopic: GetAllCommentofTopic,
-    SetDeadline: SetDeadline
+    SetDeadline: SetDeadline,
+    GetTeacherManagerTopic: GetTeacherManagerTopic,
+    DetailManaTopic: DetailManaTopic
+}
+
+async function DetailManaTopic(req, resp) {
+    req = req.body;
+
+    if (!req.hasOwnProperty("teacherID")) Utils.ThrowMissingFields(resp, "teacherID");
+    if (!req.hasOwnProperty("studentID")) Utils.ThrowMissingFields(resp, "studentID");
+
+    try {
+         let res = await MangerTopicDAO.GetManagerTopicDetail(req.teacherID, req.studentID);
+
+         res.msg[0].doc_link = Utils.Convert2String4Java(res.msg[0].doc_link);
+         res.msg[0].topic_name = Utils.Convert2String4Java(res.msg[0].topic_name);
+         res.msg[0].topic_desc = Utils.Convert2String4Java(res.msg[0].topic_desc);
+         res.msg[0].status = Utils.Convert2String4Java(res.msg[0].status);
+         res.msg[0].create_time = Utils.Convert2String4Java(res.msg[0].create_time);
+         res.msg[0].student_code = Utils.Convert2String4Java(res.msg[0].student_code);
+         res.msg[0].student_email = Utils.Convert2String4Java(res.msg[0].student_email);
+         res.msg[0].topic_state = Utils.Convert2String4Java(res.msg[0].topic_state);
+         res.msg[0].deadline = Utils.Convert2String4Java(res.msg[0].deadline);
+         try {
+             res.msg[0].topic_images = Utils.Convert2String4Java(fs.readFileSync(__dirname + "/../" + res.msg[0].topic_images, {encoding: 'base64'}));
+         } catch (e) {
+             res.msg[0].topic_images = Utils.Convert2String4Java("");
+         }
+        Utils.SuccessResp(resp, [res.msg[0]]);
+    } catch (e) {
+        Utils.ResponseDAOFail(resp, e);
+    }
+}
+
+async function GetTeacherManagerTopic(req, resp) {
+    req = req.body;
+
+    if (!req.hasOwnProperty("teacherID")) Utils.ThrowMissingFields(resp, "teacherID");
+
+    try {
+        let res = await MangerTopicDAO.GetTeacherManagerTopic(req.teacherID);
+        for (let i of res.msg) {
+            i.topic_name = Utils.Convert2String4Java(i.topic_name);
+            i.topic_desc = Utils.Convert2String4Java(i.topic_desc);
+            i.create_time = Utils.Convert2String4Java(i.create_time);
+            i.student_code = Utils.Convert2String4Java(i.student_code);
+            i.student_email = Utils.Convert2String4Java(i.student_email);
+            i.doc_link = Utils.Convert2String4Java(i.doc_link);
+            delete i.topic_images;
+            delete i.status;
+        }
+        Utils.SuccessResp(resp, res.msg);
+    } catch (e) {
+        Utils.ResponseDAOFail(resp, e);
+    }
 }
 
 async function SetDeadline(req, resp) {
@@ -101,6 +156,7 @@ async function PendingManaTopic(req, resp) {
 
 async function RegisterTopic(req, resp) {
     req = req.body;
+    console.log(req);
 
     if (!req.hasOwnProperty("studentID")) Utils.ThrowMissingFields(resp, "studentID");
     if (!req.hasOwnProperty("topicID")) Utils.ThrowMissingFields(resp, "topicID");

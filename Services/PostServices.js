@@ -19,17 +19,17 @@ async function NewPost(req, resp) {
 
     if (!req.hasOwnProperty("title")) Utils.ThrowMissingFields(resp, "title");
     if (!req.hasOwnProperty("content")) Utils.ThrowMissingFields(resp, "content");
-    if (!req.hasOwnProperty("thum")) Utils.ThrowMissingFields(resp, "thum");
+    if (!req.hasOwnProperty("thum_base64")) Utils.ThrowMissingFields(resp, "thum_base64");
 
     try {
         let FilePath = "picture/" + Date.now();
-        fs.writeFile(FilePath, req.thum, 'base64', function (err) {
+        fs.writeFile(FilePath, req.thum_base64, 'base64', function (err) {
             if (err) {
                 Utils.CustomMsg(resp, 201, [Utils.Convert2String4Java("Write to file err!")]);
             }
             PostDAO.NewPost(req.title, req.content, FilePath)
                 .then(res1 => {
-                    Utils.SuccessResp(resp, Utils.Convert2String4Java("Create post ok"));
+                    Utils.SuccessResp(resp, [Utils.Convert2String4Java("Create post ok")]);
                 })
                 .catch(err1 => {
                     Utils.ResponseDAOFail(resp, err1);

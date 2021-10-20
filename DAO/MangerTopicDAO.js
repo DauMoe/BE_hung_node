@@ -12,7 +12,25 @@ module.exports = {
     ApproveManaTopic: ApproveManaTopic,
     CommentManaTopic: CommentManaTopic,
     GetAllCommentofTopic: GetAllCommentofTopic,
-    SetDeadline: SetDeadline
+    SetDeadline: SetDeadline,
+    GetTeacherManagerTopic: GetTeacherManagerTopic,
+    GetManagerTopicDetail: GetManagerTopicDetail
+}
+
+function GetManagerTopicDetail(teacherID, studentID) {
+    let sql = "select DISTINCT h1.managerID, h1.doc_link, h1.deadline, h2.*, h3.code as 'student_code', CASE WHEN h1.status = 'ON' THEN 'true' ELSE 'false' END AS 'topic_state', h3.email as 'student_email' from manager_topic h1 inner join topics h2 inner join users h3 on h1.topicID = h2.topicID and h1.studentID = h3.userID where h1.teacherID = ? and h1.studentID = ?";
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, [teacherID, studentID], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+    });
+}
+
+function GetTeacherManagerTopic(teacherID) {
+    let sql = "select DISTINCT h1.managerID, h1.doc_link, h1.studentID, h2.*, h3.code as 'student_code', h3.email as 'student_email' from manager_topic h1 inner join topics h2 inner join users h3 on h1.topicID = h2.topicID and h1.studentID = h3.userID where h1.teacherID = ?";
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, [teacherID], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+    });
 }
 
 function SetDeadline(managerID, deadline) {

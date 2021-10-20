@@ -5,10 +5,6 @@ const fs = require('fs');
 const JWT_Utils = require('./../Utils/Autho');
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
-/*
-* NOTE:
-*   bcrypt: https://www.npmjs.com/package/bcrypt
-* */
 
 module.exports = {
     NewTopic: NewTopic,
@@ -19,11 +15,12 @@ module.exports = {
 
 async function DetailTopic(req, resp) {
     req = req.body;
-
+console.log(req);
     if (!req.hasOwnProperty("topicID")) Utils.ThrowMissingFields(resp, "topicID");
+    if (!req.hasOwnProperty("studentID")) Utils.ThrowMissingFields(resp, "studentID");
 
     try {
-        let res = await TopicDAO.GetDetailTopicByID(req.topicID);
+        let res = await TopicDAO.GetDetailTopicByID(req.topicID, req.studentID);
         let comments = await MangerTopicDAO.GetAllCommentofTopic(res.msg[0].managerID);
         for (let j of comments.msg) {
             j.comment = Utils.Convert2String4Java("'" + j.comment + "'");
@@ -74,11 +71,11 @@ async function NewTopic(req, resp) {
     if (!req.hasOwnProperty("topic_name")) Utils.ThrowMissingFields(resp, "topic_name");
     if (!req.hasOwnProperty("authorID")) Utils.ThrowMissingFields(resp, "authorID");
     if (!req.hasOwnProperty("topic_desc")) Utils.ThrowMissingFields(resp, "topic_desc");
-    if (!req.hasOwnProperty("topic_images")) Utils.ThrowMissingFields(resp, "topic_images");
+    if (!req.hasOwnProperty("base64Thum")) Utils.ThrowMissingFields(resp, "base64Thum");
 
     try {
         let FilePath = "picture/" + Date.now();
-        fs.writeFileSync(FilePath, req.topic_images, 'base64');
+        fs.writeFileSync(FilePath, req.base64Thum, 'base64');
         await TopicDAO.NewTopic(req.authorID, req.topic_name, req.topic_desc, FilePath);
         Utils.SuccessResp(resp, [Utils.Convert2String4Java("Create topic ok")]);
     } catch(e) {
