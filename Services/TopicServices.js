@@ -35,6 +35,8 @@ async function DetailTopic(req, resp) {
         res.msg[0].topic_name = Utils.Convert2String4Java(res.msg[0].topic_name);
         res.msg[0].topic_desc = Utils.Convert2String4Java(res.msg[0].topic_desc);
         res.msg[0].create_time = Utils.Convert2String4Java(res.msg[0].create_time);
+        res.msg[0].doc_link = (res.msg[0].doc_link == null) ? Utils.Convert2String4Java("No document link") : Utils.Convert2String4Java(res.msg[0].doc_link);
+        res.msg[0].deadline = (res.msg[0].deadline == null) ? Utils.Convert2String4Java("No deadline is set") : Utils.Convert2String4Java(res.msg[0].deadline);
 
         let path = __dirname + "/../" + res.msg[0].topic_images;
         try {
@@ -58,6 +60,7 @@ async function GetListTopic(req, resp) {
             i.teacher_code = Utils.Convert2String4Java(i.teacher_code);
             i.status = Utils.Convert2String4Java(i.status);
             i.create_time = Utils.Convert2String4Java(i.create_time);
+            delete i.topic_images;
         }
         Utils.SuccessResp(resp, res.msg);
     } catch (e) {
