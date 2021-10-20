@@ -26,11 +26,12 @@ async function DetailTopic(req, resp) {
         let res = await TopicDAO.GetDetailTopicByID(req.topicID);
         let comments = await MangerTopicDAO.GetAllCommentofTopic(res.msg[0].managerID);
         for (let j of comments.msg) {
-            j.comment = Utils.Convert2String4Java(j.comment);
-            j.timestamp = Utils.Convert2String4Java(j.timestamp);
+            j.comment = Utils.Convert2String4Java("'" + j.comment + "'");
+            j.timestamp = Utils.Convert2String4Java("'" + j.timestamp + "'");
         }
+        if (res.msg[0].managerID == null) res.msg[0].managerID = -1;
         res.msg[0].comments = comments.msg;
-        res.msg[0].registed = Utils.Convert2String4Java(res.msg[0].registed);
+        res.msg[0].state = Utils.Convert2String4Java(res.msg[0].state);
         res.msg[0].topic_name = Utils.Convert2String4Java(res.msg[0].topic_name);
         res.msg[0].topic_desc = Utils.Convert2String4Java(res.msg[0].topic_desc);
         res.msg[0].create_time = Utils.Convert2String4Java(res.msg[0].create_time);
@@ -41,7 +42,7 @@ async function DetailTopic(req, resp) {
         } catch(e) {
             res.msg[0].topic_images = Utils.Convert2String4Java("");
         }
-        Utils.SuccessResp(resp, res.msg[0]);
+        Utils.SuccessResp(resp, [res.msg[0]]);
     } catch (e) {
         Utils.ResponseDAOFail(resp, e);
     }
