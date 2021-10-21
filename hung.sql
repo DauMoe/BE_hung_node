@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 19, 2021 at 05:38 AM
+-- Generation Time: Oct 21, 2021 at 08:15 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.2.32
 
@@ -39,8 +39,19 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`eventID`, `comment`, `managerID`, `timestamp`) VALUES
-(22, 'Lafm bafi oke la', 65, '2021-10-19 10:11:51'),
-(23, 'Ok ddaay', 65, '2021-10-19 10:21:15');
+(24, 'fddfgdfg', 72, '2021-10-20 17:20:31'),
+(26, 'asdasd', 72, '2021-10-21 00:02:03'),
+(27, 'hi', 79, '2021-10-21 23:33:42'),
+(28, 'gggv', 79, '2021-10-21 23:40:53'),
+(29, 'gggv', 79, '2021-10-21 23:40:59'),
+(30, 'bhnn', 79, '2021-10-21 23:58:07'),
+(31, 'bhnn', 79, '2021-10-21 23:58:30'),
+(32, 'bhnn', 79, '2021-10-21 23:59:05'),
+(33, 'sd', 79, '2021-10-22 00:17:06'),
+(34, 'sd', 79, '2021-10-22 00:17:18'),
+(35, 'Ok ddaay', 79, '2021-10-22 00:27:11'),
+(36, 'Ok ddaay', 79, '2021-10-22 00:28:03'),
+(37, 'Ok ddaay', 79, '2021-10-22 00:28:17');
 
 -- --------------------------------------------------------
 
@@ -64,7 +75,8 @@ CREATE TABLE `manager_topic` (
 --
 
 INSERT INTO `manager_topic` (`managerID`, `teacherID`, `studentID`, `topicID`, `timestamp`, `status`, `doc_link`, `deadline`) VALUES
-(65, 10, 10, 15, '2021-10-19 09:58:09', 'ON', 'http://doc.google.com/abAWF44CB', '2021-11-20');
+(72, 10, 10, 15, '2021-10-20 17:02:55', 'PENDING', 'fdsfsd', '2021-10-29'),
+(79, 10, 12, 14, '2021-10-20 17:02:55', 'ON', 'http://doc.google.com/Anfs3rnA9', '2021-10-30');
 
 -- --------------------------------------------------------
 
@@ -85,7 +97,12 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`postID`, `post_title`, `post_content`, `post_thum`, `create_time`) VALUES
-(7, 'test', 'adasd', 'picture/1634577071353', '2021-10-19 00:11:11');
+(7, 'test', 'adasd', 'picture/1634577071353', '2021-10-19 00:11:11'),
+(8, 'test', 'adasd', 'picture/1634725359642', '2021-10-20 17:22:39'),
+(9, 'test', 'adasd', 'picture/1634725420024', '2021-10-20 17:23:40'),
+(10, 'test', 'adasd', 'picture/1634725445811', '2021-10-20 17:24:05'),
+(11, 'test', 'adasd', 'picture/1634725459127', '2021-10-20 17:24:19'),
+(12, 'Test Post', 'test post', 'picture/1634725511920', '2021-10-20 17:25:11');
 
 -- --------------------------------------------------------
 
@@ -123,7 +140,9 @@ CREATE TABLE `topics` (
 
 INSERT INTO `topics` (`topicID`, `authorID`, `topic_name`, `topic_desc`, `topic_images`, `status`, `create_time`) VALUES
 (13, 10, 'moe', 'nothing', 'picture/1634573847197', 'ON', '2021-10-18 23:17:27'),
-(15, 10, 'topic1', 'test topic', 'picture/1634612036845', 'ON', '2021-10-19 09:53:56');
+(14, 10, 'topic2', 'test topic2', 'picture/1634654647089', 'ON', '2021-10-19 21:44:07'),
+(15, 10, 'topic3', 'test topic3', 'picture/1634654657132', 'ON', '2021-10-19 21:44:17'),
+(16, 10, 'Test topic', 'Topic for test', 'picture/1634725590681', 'ON', '2021-10-20 17:26:30');
 
 -- --------------------------------------------------------
 
@@ -154,7 +173,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `email`, `code`, `password`, `ava_url`, `dob`, `address`, `about`, `roles`, `gender`, `one`, `two`, `three`, `four`, `five`) VALUES
-(10, 'a', 'STU3912@kma.edu.vn', '123', NULL, NULL, NULL, NULL, 'STUDENT', NULL, 0, 0, 0, 0, 0);
+(10, 'a', 'STU3912@kma.edu.vn', '123', NULL, NULL, NULL, NULL, 'TEACHER', NULL, 0, 0, 0, 0, 0),
+(11, 'teacher1', 'TEACHER342@kma.edu.vn', '123', NULL, NULL, NULL, NULL, 'TEACHER', NULL, 0, 0, 0, 0, 0),
+(12, 'user2', 'STU24@kma.edu.vn', '123', NULL, NULL, NULL, NULL, 'STUDENT', NULL, 0, 0, 0, 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -165,7 +186,7 @@ INSERT INTO `users` (`userID`, `email`, `code`, `password`, `ava_url`, `dob`, `a
 --
 ALTER TABLE `events`
   ADD PRIMARY KEY (`eventID`),
-  ADD KEY `fo_managerID_events` (`managerID`);
+  ADD KEY `fo_managerID` (`managerID`);
 
 --
 -- Indexes for table `manager_topic`
@@ -211,19 +232,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `eventID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `eventID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `manager_topic`
 --
 ALTER TABLE `manager_topic`
-  MODIFY `managerID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `managerID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `postID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `postID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `rating`
@@ -235,13 +256,13 @@ ALTER TABLE `rating`
 -- AUTO_INCREMENT for table `topics`
 --
 ALTER TABLE `topics`
-  MODIFY `topicID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `topicID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `userID` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
@@ -252,7 +273,21 @@ ALTER TABLE `users`
 --
 ALTER TABLE `events`
   ADD CONSTRAINT `fo_managerID` FOREIGN KEY (`managerID`) REFERENCES `manager_topic` (`managerID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fo_managerID_events` FOREIGN KEY (`managerID`) REFERENCES `manager_topic` (`managerID`) ON DELETE CASCADE;
+  ADD CONSTRAINT `managerID_fo` FOREIGN KEY (`managerID`) REFERENCES `manager_topic` (`managerID`);
+
+--
+-- Constraints for table `manager_topic`
+--
+ALTER TABLE `manager_topic`
+  ADD CONSTRAINT `mana_topicid` FOREIGN KEY (`topicID`) REFERENCES `topics` (`topicID`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `student_mana_topic` FOREIGN KEY (`studentID`) REFERENCES `users` (`userID`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `teaccher_mana_topic` FOREIGN KEY (`teacherID`) REFERENCES `users` (`userID`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `topics`
+--
+ALTER TABLE `topics`
+  ADD CONSTRAINT `author_topic` FOREIGN KEY (`authorID`) REFERENCES `users` (`userID`) ON DELETE NO ACTION ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
