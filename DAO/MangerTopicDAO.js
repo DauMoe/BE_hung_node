@@ -18,7 +18,7 @@ module.exports = {
 }
 
 function GetManagerTopicDetail(teacherID, studentID) {
-    let sql = "select DISTINCT h1.managerID, h1.doc_link, h1.deadline, h2.*, h3.code as 'student_code', CASE WHEN h1.status = 'ON' THEN 'true' ELSE 'false' END AS 'topic_state', h3.email as 'student_email' from manager_topic h1 inner join topics h2 inner join users h3 on h1.topicID = h2.topicID and h1.studentID = h3.userID where h1.teacherID = ? and h1.studentID = ?";
+    let sql = "select DISTINCT h1.managerID, h1.doc_link, CAST(h1.deadline as DATE) as deadline, h2.topic_name, h2.create_time, h1.status, h2.topic_desc, h2.topic_images, h3.code as 'student_code', CASE WHEN h1.status = 'ON' THEN 'true' ELSE 'false' END AS 'topic_state', h3.email as 'student_email' from manager_topic h1 inner join topics h2 inner join users h3 on h1.topicID = h2.topicID and h1.studentID = h3.userID where h1.teacherID = ? and h1.studentID = ?";
 
     return new Promise((resolve, reject) => {
         connection.query(sql, [teacherID, studentID], (err, res) => Utils.HandQuery(err, res, resolve, reject));
@@ -74,7 +74,7 @@ function GetPendingManagerTopic(teacherID) {
 }
 
 function RegisterTopic(studentID, topicID, teacherID, docLink) {
-    let sql = "INSERT INTO manager_topic (studentID, topicID, teacherID, doc_link, status) VALUES (?, ?, ?, ?, 'ON')";
+    let sql = "INSERT INTO manager_topic (studentID, topicID, teacherID, doc_link, status) VALUES (?, ?, ?, ?, 'PENDING')";
 
     return new Promise((resolve, reject) => {
         connection.query(sql, [studentID, topicID, teacherID, docLink], (err, res) => Utils.HandQueryWithCode(err, res, resolve, reject));
