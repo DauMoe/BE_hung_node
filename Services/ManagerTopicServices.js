@@ -119,13 +119,15 @@ async function GetAllCommentofTopic(req, resp) {
     }
 }
 
-async function ApproveManaTopic(req, resp) {
+async function ApproveManaTopic(req, resp, WsConnection) {
     req = req.body;
 
     if (!req.hasOwnProperty("managerID")) Utils.ThrowMissingFields(resp, "managerID");
 
     try {
         await MangerTopicDAO.ApproveManaTopic(req.managerID);
+        let res = await MangerTopicDAO.GetManagerTopicByManaID(req.managerID);
+        WsConnection.sendUTF(`{'target' : ${res.msg[0].studentID}, 'msg': "${res.msg[0].topic_name} has approved!"}`);
         Utils.SuccessResp(resp, [Utils.Convert2String4Java("Approve ok")]);
     } catch (e) {
         Utils.ResponseDAOFail(resp, e);

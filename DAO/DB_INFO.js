@@ -11,6 +11,12 @@ const LOCALHOST_CONFIG = {
     database: 'hung'
 };
 
+const LOCAL_DB = {
+    host: 'localhost',
+    user: 'root',
+    password: ''
+}
+
 const QUERY_CODE = {
     "OK": 200,
     "QUERY_FAIL": 201
@@ -18,5 +24,6 @@ const QUERY_CODE = {
 
 module.exports = {
     db_config: LOCALHOST_CONFIG,
-    query_code: QUERY_CODE
+    query_code: QUERY_CODE,
+    LOCAL_DB: LOCAL_DB
 }

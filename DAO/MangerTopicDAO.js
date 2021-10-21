@@ -14,7 +14,16 @@ module.exports = {
     GetAllCommentofTopic: GetAllCommentofTopic,
     SetDeadline: SetDeadline,
     GetTeacherManagerTopic: GetTeacherManagerTopic,
-    GetManagerTopicDetail: GetManagerTopicDetail
+    GetManagerTopicDetail: GetManagerTopicDetail,
+    GetManagerTopicByManaID: GetManagerTopicByManaID
+}
+
+function GetManagerTopicByManaID(managerID) {
+    let sql = "SELECT h1.studentID, h2.topic_name from manager_topic h1 inner join topics h2 on h1.topicID = h2.topicID where h1.managerID = ?";
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, [managerID], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+    });
 }
 
 function GetManagerTopicDetail(teacherID, studentID) {
