@@ -19,7 +19,7 @@ function NewPost(post_title, post_content, post_thum) {
 }
 
 function GetPost() {
-    let sql = "SELECT * FROM posts";
+    let sql = "SELECT * FROM posts ORDER BY create_time DESC";
 
     return new Promise((resolve, reject) => {
         connection.query(sql,  (err, res) => Utils.HandQuery(err, res, resolve, reject));

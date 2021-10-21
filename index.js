@@ -35,14 +35,9 @@ const wsServer = new WebSocketServer({
 });
 wsServer.on('request', function(request) {
     const connection = request.accept(null, request.origin);
+    MANA_SV.setWsConn(connection);
     connection.on('message', function(message) {
         console.log('Received Message:', message.utf8Data);
-        WsConn = connection;
-
-        // TriggerDB(connection);
-        // setInterval(() => {
-        //     connection.sendUTF("{'target': 'moe1', 'msg': 'Hi this is WebSocket server!'}");
-        // }, 10000);
     });
     connection.on('close', function(reasonCode, description) {
         console.log('Client has disconnected.');
@@ -92,9 +87,7 @@ app.post(API_URL.REGIS_TOPIC, MANA_SV.RegisterTopic);
 app.post(API_URL.DEL_TOPIC, MANA_SV.DeleteTopic);
 app.post(API_URL.EDIT_LINK, MANA_SV.EditDocLink);
 app.post(API_URL.PENDING_MANA_TOPIC, MANA_SV.PendingManaTopic);
-app.post(API_URL.APPROVE_MANA_TOPIC, (req, resp) => {
-    MANA_SV.ApproveManaTopic(req, resp, WsConn);
-});
+app.post(API_URL.APPROVE_MANA_TOPIC, MANA_SV.ApproveManaTopic);
 app.post(API_URL.COMMENT_MANA_TOPIC, MANA_SV.CommentManaTopic);
 app.post(API_URL.GET_ALL_COMMENT, MANA_SV.GetAllCommentofTopic);
 app.post(API_URL.LIST_MANA_TOPIC, MANA_SV.GetTeacherManagerTopic);

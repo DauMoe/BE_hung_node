@@ -10,6 +10,7 @@ const SALT_ROUNDS = 10;
 * */
 
 module.exports = {
+    setWsConn: setWsConn,
     RegisterTopic: RegisterTopic,
     DeleteTopic: DeleteTopic,
     EditDocLink: EditDocLink,
@@ -20,6 +21,12 @@ module.exports = {
     SetDeadline: SetDeadline,
     GetTeacherManagerTopic: GetTeacherManagerTopic,
     DetailManaTopic: DetailManaTopic
+}
+
+let WsConnection = null;
+
+function setWsConn(con) {
+    WsConnection = con;
 }
 
 async function DetailManaTopic(req, resp) {
@@ -119,7 +126,7 @@ async function GetAllCommentofTopic(req, resp) {
     }
 }
 
-async function ApproveManaTopic(req, resp, WsConnection) {
+async function ApproveManaTopic(req, resp) {
     req = req.body;
 
     if (!req.hasOwnProperty("managerID")) Utils.ThrowMissingFields(resp, "managerID");
@@ -127,7 +134,12 @@ async function ApproveManaTopic(req, resp, WsConnection) {
     try {
         await MangerTopicDAO.ApproveManaTopic(req.managerID);
         let res = await MangerTopicDAO.GetManagerTopicByManaID(req.managerID);
-        WsConnection.sendUTF(`{'target' : ${res.msg[0].studentID}, 'msg': "${res.msg[0].topic_name} has approved!"}`);
+        setTimeout(() => {
+            console.log(WsConnection);
+            if (WsConnection != null) {
+                WsConnection.sendUTF(`{"userID" : ${res.msg[0].studentID}, "msg": "${res.msg[0].topic_name} has approved!"}`);
+            }
+        }, 1000);
         Utils.SuccessResp(resp, [Utils.Convert2String4Java("Approve ok")]);
     } catch (e) {
         Utils.ResponseDAOFail(resp, e);
