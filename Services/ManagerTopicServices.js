@@ -103,6 +103,13 @@ async function CommentManaTopic(req, resp) {
 
     try {
         await MangerTopicDAO.CommentManaTopic(req.comment, req.managerID);
+        let res = await MangerTopicDAO.GetManagerTopicByManaID(req.managerID);
+        setTimeout(() => {
+            if (WsConnection != null) {
+                console.log("Send noti to userID " + res.msg[0].studentID);
+                WsConnection.sendUTF(`{"userID" : ${res.msg[0].studentID}, "msg": "Teacher comments on topic: '${req.comment}'"}`);
+            }
+        }, 1000);
         Utils.SuccessResp(resp, [Utils.Convert2String4Java("Thanks for your comment!")]);
     } catch(e) {
         Utils.ResponseDAOFail(resp, e);
@@ -135,8 +142,8 @@ async function ApproveManaTopic(req, resp) {
         await MangerTopicDAO.ApproveManaTopic(req.managerID);
         let res = await MangerTopicDAO.GetManagerTopicByManaID(req.managerID);
         setTimeout(() => {
-            console.log(WsConnection);
             if (WsConnection != null) {
+                console.log("Send noti to userID " + res.msg[0].studentID);
                 WsConnection.sendUTF(`{"userID" : ${res.msg[0].studentID}, "msg": "${res.msg[0].topic_name} has approved!"}`);
             }
         }, 1000);
