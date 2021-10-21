@@ -1,6 +1,6 @@
 # Hướng dẫn sử dụng
 
-** Cách cài đặt: **  
+**Cách cài đặt:**  
 > 1. Clone project về  
 > 2. Mở CMD, cd tới thư mục vừa clone  
 > 3. chạy lệnh `npm install`  
