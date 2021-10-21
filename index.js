@@ -7,6 +7,26 @@ const USER_SV = require('./Services/UserServices');
 const TOPIC_SV = require('./Services/TopicServices');
 const POST_SV = require('./Services/PostServices');
 const MANA_SV = require('./Services/ManagerTopicServices');
+const http = require('http');
+const WebSocketServer = require('websocket').server;
+const server = http.createServer();
+server.listen(9898);
+const wsServer = new WebSocketServer({
+    httpServer: server
+});
+wsServer.on('request', function(request) {
+    const connection = request.accept(null, request.origin);
+    connection.on('message', function(message) {
+        console.log('Received Message:', message.utf8Data);
+        setInterval(() => {
+            connection.sendUTF('Hi this is WebSocket server!');
+        }, 3000);
+    });
+    connection.on('close', function(reasonCode, description) {
+        console.log('Client has disconnected.');
+    });
+});
+return;
 
 //Config
 app.use(cors()); //Pass CORS
