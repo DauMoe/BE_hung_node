@@ -4,6 +4,7 @@ const JWT_Utils = require('./../Utils/Autho');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 const SALT_ROUNDS = 10;
+
 /*
 * NOTE:
 *   bcrypt: https://www.npmjs.com/package/bcrypt

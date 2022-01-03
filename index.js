@@ -44,33 +44,15 @@ wsServer.on('request', function(request) {
     });
 });
 
-// function TriggerDB() {
-//     let EventWatcher = MySQLEvents(db_config.LOCAL_DB);
-//     let ManaTopicStatusWatcher = EventWatcher.add(
-//         'hung.manager_topic.status',
-//         function (oldRow, newRow, events) {
-//             console.log(events);
-//             if (oldRow === null) {
-//                 //insert code goes here
-//                 console.log("Row inserted");
-//             }
-//
-//             //row deleted
-//             if (newRow === null) {
-//                 //delete code goes here
-//                 console.log("Row deleted");
-//             }
-//
-//             //row updated
-//             if (oldRow !== null && newRow !== null) {
-//                 //update code goes here
-//                 console.log("Row updated");
-//             }
-//         }
-//     );
-// }
-// TriggerDB();
 //API
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+app.post("/test", (req, resp) => {
+    return resp.status(200).send("ok");
+});
+
+exports.app = functions.https.onRequest(app);
+
 app.post(API_URL.LOGIN, USER_SV.Login);
 app.post(API_URL.NEW_USER, USER_SV.NewUser);
 app.post(API_URL.RATING, USER_SV.Rating);

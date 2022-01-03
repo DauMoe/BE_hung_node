@@ -22,7 +22,7 @@ function CreateNewUser(email, code, password, roles) {
     let sql = "INSERT INTO users (email, code, password, roles) VALUES (?, ?, ?, ?)";
 
     return new Promise((resolve, reject) => {
-        connection.query(sql, [email, code, password, roles], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+        connection.query(sql, [email, code, password, roles, firebaseID], (err, res) => Utils.HandQuery(err, res, resolve, reject));
     });
 }
 
